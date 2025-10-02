@@ -15,6 +15,7 @@ public class DoctorSummaryDto {
     private Long id;
     private String firstName;
     private String lastName;
+    private String licenseNumber;
     private String email;
     private String phoneNumber;
     private String practiceName;
@@ -26,6 +27,7 @@ public class DoctorSummaryDto {
                 .firstName(doctor.getFirstName())
                 .lastName(doctor.getLastName())
                 .email(doctor.getEmail())
+                .licenseNumber(doctor.getMedicalLicenseNumber())
                 .phoneNumber(doctor.getPhoneNumber())
                 .practiceName(doctor.getPracticeName())
                 .primarySpecialization(doctor.getSpecialization())

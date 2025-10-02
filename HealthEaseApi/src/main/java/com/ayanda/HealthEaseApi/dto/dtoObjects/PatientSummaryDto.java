@@ -15,6 +15,7 @@ public class PatientSummaryDto {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String idNumber;
 
     public static PatientSummaryDto fromEntity(Patient patient) {
         return PatientSummaryDto.builder()
@@ -22,6 +23,7 @@ public class PatientSummaryDto {
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
                 .phoneNumber(patient.getPhoneNumber())
+                .idNumber(patient.getIdNumber())
                 .build();
     }
 }

@@ -49,7 +49,17 @@ public class Appointment {
         SECOND_OPINION,
         PROCEDURE,
         VACCINATION,
-        HEALTH_SCREENING
+        HEALTH_SCREENING,
+        IN_PERSON;
+
+        public static AppointmentType getAppointmentType(String type) {
+            for (AppointmentType appointmentType : AppointmentType.values()) {
+                if (appointmentType.name().equalsIgnoreCase(type)) {
+                    return appointmentType;
+                }
+            }
+            throw new IllegalArgumentException("Invalid appointment type: " + type);
+        }
     }
 
     public enum AppointmentStatus {

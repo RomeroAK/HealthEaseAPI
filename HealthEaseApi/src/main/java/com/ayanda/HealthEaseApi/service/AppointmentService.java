@@ -77,7 +77,7 @@ public AppointmentDto mapToDto(Appointment appointment) {
     return AppointmentDto.builder()
             .id(appointment.getAppointmentId())
             .appointmentDate(appointment.getAppointmentDate())
-            .appointmentType(appointment.getAppointmentType())
+            .appointmentType(appointment.getAppointmentType().name())
             .status(appointment.getStatus())
             .reason(appointment.getReason())
             .patient(PatientSummaryDto.fromEntity(appointment.getPatient()))
@@ -89,9 +89,11 @@ public Appointment mapToEntity(AppointmentDto dto) {
     return Appointment.builder()
             .appointmentId(dto.getId())
             .appointmentDate(dto.getAppointmentDate())
-            .appointmentType(dto.getAppointmentType())
+            .appointmentType(Appointment.AppointmentType.getAppointmentType(dto.getAppointmentType()))
             .status(dto.getStatus())
             .reason(dto.getReason())
             .build();
 }
+
+
 }

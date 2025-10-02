@@ -21,7 +21,7 @@ public class AppointmentDto {
 
     private LocalDate appointmentDate;
 
-    private Appointment.AppointmentType appointmentType;
+    private String appointmentType;
 
     private Appointment.AppointmentStatus status;
 
