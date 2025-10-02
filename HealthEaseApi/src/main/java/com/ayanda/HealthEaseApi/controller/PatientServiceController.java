@@ -13,15 +13,12 @@ import com.ayanda.HealthEaseApi.service.MedicalHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/patient/service")
+@RequestMapping("/api/patients")
 @RequiredArgsConstructor
 public class PatientServiceController {
 
@@ -30,8 +27,8 @@ public class PatientServiceController {
     private final AppointmentService appointmentService;
     private final MedicalHistoryService medicalHistoryService;
 
-    @GetMapping("{userId}/patient/doctors/get-all")
-    public ResponseEntity<ApiResponseDto> getAllDoctors() {
+    @GetMapping("service/{userId}/patient/doctors/get-all")
+    public ResponseEntity<ApiResponseDto> getAllDoctors(@PathVariable Long userId) {
         try {
             List<DoctorProfileResponseDto> doctors = doctorServicel.getAllDoctors();
             return ResponseEntity.ok(new ApiResponseDto(true, "Doctors retrieved successfully", doctors));
@@ -42,8 +39,8 @@ public class PatientServiceController {
         }
     }
 
-    @GetMapping("{userId}/patient/doctors/get-by-specialization/{specialization}")
-    public ResponseEntity<ApiResponseDto> getDoctorsBySpecialization(@PathVariable String specialization) {
+    @GetMapping("service/{userId}/patient/doctors/get-by-specialization/{specialization}")
+    public ResponseEntity<ApiResponseDto> getDoctorsBySpecialization(@PathVariable Long userId, @PathVariable String specialization) {
         try {
             List<DoctorProfileResponseDto> doctors = doctorServicel.getDoctorsBySpecialization(specialization);
             return ResponseEntity.ok(new ApiResponseDto(true, "Doctors retrieved successfully", doctors));
@@ -54,8 +51,8 @@ public class PatientServiceController {
         }
     }
 
-    @GetMapping("{userId}/patient/doctors/get-by-license/{licenseNumber}")
-    public ResponseEntity<ApiResponseDto> getByLicenseNumber(@PathVariable String licenseNumber) {
+    @GetMapping("service/{userId}/patient/doctors/get-by-license/{licenseNumber}")
+    public ResponseEntity<ApiResponseDto> getByLicenseNumber(@PathVariable Long userId, @PathVariable String licenseNumber) {
         try {
             DoctorProfileResponseDto doctor = doctorServicel.getByLicenseNumber(licenseNumber);
             return ResponseEntity.ok(new ApiResponseDto(true, "Doctor retrieved successfully", doctor));
@@ -68,8 +65,8 @@ public class PatientServiceController {
 
     //Appointment endpoints can be added here
 
-    @GetMapping("{userId}/patient/appointments/get-all")
-    public ResponseEntity<ApiResponseDto> getAllAppointments(Long userId) {
+    @GetMapping("service/{userId}/patient/appointments/get-all")
+    public ResponseEntity<ApiResponseDto> getAllAppointments(@PathVariable Long userId) {
         try {
             List<AppointmentDto> appointments = appointmentService.getAppointmentsByUserIdSortByDate(userId);
             return ResponseEntity.ok(new ApiResponseDto(true, "Appointments retrieved successfully", appointments));
@@ -80,8 +77,8 @@ public class PatientServiceController {
         }
     }
 
-    @PostMapping("{userId}/patient/appointments/book")
-    public ResponseEntity<ApiResponseDto> bookAppointment(Long userId, AppointmentBookingRequest appointmentRequest) {
+    @PostMapping("service/{userId}/patient/appointments/book")
+    public ResponseEntity<ApiResponseDto> bookAppointment(@PathVariable Long userId, @RequestBody AppointmentBookingRequest appointmentRequest) {
         try {
             // Assuming appointmentRequest is of the correct type
             Object bookedAppointment = appointmentService.bookAppointment(userId, appointmentRequest.getAppointmentInfo());
@@ -93,7 +90,7 @@ public class PatientServiceController {
         }
     }
 
-    @GetMapping("{userId}/patient/medical-history/get-all")
+    @GetMapping("service/{userId}/patient/medical-history/get-all")
     public ResponseEntity<ApiResponseDto> getMedicalHistory(@PathVariable Long userId) {
         try {
             List<MedicalHistoryDto> medicalHistories = medicalHistoryService.getAllPatientHistoriesByPatientId(userId);
