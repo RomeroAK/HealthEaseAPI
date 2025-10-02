@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -123,7 +124,7 @@ public class Patient {
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "patients", fetch = FetchType.LAZY)
-    private List<Doctor> doctors;
+    private List<Doctor> doctors = new ArrayList<>();
 }
 
 

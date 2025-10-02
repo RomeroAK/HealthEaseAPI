@@ -170,7 +170,7 @@ public class Doctor {
     private Double longitude;
 
     @ManyToMany
-    private List<Patient> patients;
+    private List<Patient> patients = new ArrayList<>();
 
     // Enums
     public enum Gender {

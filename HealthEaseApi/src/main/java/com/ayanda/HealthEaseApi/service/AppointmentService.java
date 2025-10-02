@@ -44,6 +44,7 @@ public class AppointmentService {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
        Appointment savedAppointment = appointmentRepository.save(appointment);
+       linkPatientToDoctor(patient, doctor);
        return mapToDto(savedAppointment);
     }
 
@@ -69,6 +70,21 @@ public class AppointmentService {
         appointment.setStatus(Appointment.AppointmentStatus.CANCELLED);
         Appointment savedAppointment = appointmentRepository.save(appointment);
         return mapToDto(savedAppointment);
+    }
+
+    public void linkPatientToDoctor(Patient patient, Doctor doctor) {
+
+        // Update both sides of the relationship
+        if (!patient.getDoctors().contains(doctor)) {
+            patient.getDoctors().add(doctor);
+        }
+
+        if (!doctor.getPatients().contains(patient)) {
+            doctor.getPatients().add(patient);
+        }
+        // Save the updated entities
+        patientRepository.save(patient);
+        doctorRepository.save(doctor);
     }
 
 // In AppointmentService.java
