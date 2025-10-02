@@ -1,6 +1,7 @@
 package com.ayanda.HealthEaseApi.repos;
 
 
+import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentSearchCriteria;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentStatsDto;
 import com.ayanda.HealthEaseApi.entities.Appointment;
@@ -23,5 +24,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     boolean existsByDoctor_DoctorIdAndPatient_PatientId(Long doctorId, Long patientId);
 
 
-
+    List<Appointment> findByPatient_PatientIdOrderByAppointmentDateDesc(Long patientId);
 }

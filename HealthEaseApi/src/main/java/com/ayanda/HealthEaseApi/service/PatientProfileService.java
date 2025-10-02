@@ -270,7 +270,7 @@ public class PatientProfileService {
         if (medicalInfo.getChronicConditions() != null) {
             medicalHistory.setChronicConditions(String.join(",",
                     medicalInfo.getChronicConditions().stream()
-                            .map(condition -> condition.getName())
+                            .map(condition -> condition.getName() + ":" + condition.getDescription())
                             .collect(Collectors.toList())
             ));
         }

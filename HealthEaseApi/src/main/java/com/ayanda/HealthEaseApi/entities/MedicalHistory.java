@@ -2,6 +2,7 @@ package com.ayanda.HealthEaseApi.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MedicalHistory {
 
     @Id
@@ -23,6 +25,10 @@ public class MedicalHistory {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Patient patient;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private Doctor doctor;
 
     @Column(name = "blood_type")
     private String bloodType;

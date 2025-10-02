@@ -97,6 +97,13 @@ public class DoctorProfileService {
                 .collect(Collectors.toList());
     }
 
+    public DoctorProfileResponseDto getByLicenseNumber(String licenseNumber) {
+        Doctor doctor = doctorRepository.findByMedicalLicenseNumber(licenseNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor", "license number", 0L));
+
+        return mapToDto(doctor);
+    }
+
     public List<PatientProfileResponseDto> getPatientsLinkedToDoctor(Long doctorUserId){
         User user = userRepository.findById(doctorUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", doctorUserId));
@@ -112,6 +119,8 @@ public class DoctorProfileService {
     }
 
     private void updateProfileInfo(Doctor doctor, User user, DoctorInfoUpdateDto info){
+
+        doctor.setUserId(user.getId());
         doctor.setFirstName(info.getFirstName());
         doctor.setLastName(info.getLastName());
         doctor.setEmail(info.getEmail());
@@ -123,7 +132,7 @@ public class DoctorProfileService {
         doctor.setMedicalLicenseNumber(info.getLicenseNumber());
         doctor.setIsActive(info.isActive());
         List<String> insuranceList = List.of(info.getAcceptedInsurance().split("-"));
-        doctor.setAcceptedInsuranceProviders(insuranceList);
+        doctor.getAcceptedInsuranceProviders().addAll(insuranceList);
 
         if (info.isPrivatePractice()) {
             if(info.getClinicAddress()!=null){
@@ -600,5 +609,6 @@ public class DoctorProfileService {
         return dto;
 
     }
+
 
 }

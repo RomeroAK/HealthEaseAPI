@@ -28,6 +28,9 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
 
+    @Column(name = "main_user_id", unique = true, nullable = false)
+    private Long userId;
+
     // Basic Information
     @NotBlank(message = "First name is required")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")

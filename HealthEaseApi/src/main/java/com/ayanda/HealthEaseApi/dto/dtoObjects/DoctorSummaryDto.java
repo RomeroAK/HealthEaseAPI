@@ -1,5 +1,7 @@
 package com.ayanda.HealthEaseApi.dto.dtoObjects;
 
+import com.ayanda.HealthEaseApi.entities.Doctor;
+import com.ayanda.HealthEaseApi.entities.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +19,16 @@ public class DoctorSummaryDto {
     private String phoneNumber;
     private String practiceName;
     private String primarySpecialization;
-    private String profilePictureUrl;
+
+    public static DoctorSummaryDto fromEntity(Doctor doctor) {
+        return DoctorSummaryDto.builder()
+                .id(doctor.getDoctorId())
+                .firstName(doctor.getFirstName())
+                .lastName(doctor.getLastName())
+                .email(doctor.getEmail())
+                .phoneNumber(doctor.getPhoneNumber())
+                .practiceName(doctor.getPracticeName())
+                .primarySpecialization(doctor.getSpecialization())
+                .build();
+    }
 }

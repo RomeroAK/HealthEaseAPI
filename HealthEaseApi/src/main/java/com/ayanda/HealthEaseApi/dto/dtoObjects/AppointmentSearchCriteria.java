@@ -35,10 +35,6 @@ public class AppointmentSearchCriteria {
 
     private List<Appointment.AppointmentStatus> statuses;
 
-    private List<Appointment.ConsultationMode> consultationModes;
-
-    private List<Appointment.PaymentStatus> paymentStatuses;
-
     private String reasonForVisit;
 
     private String patientName;
