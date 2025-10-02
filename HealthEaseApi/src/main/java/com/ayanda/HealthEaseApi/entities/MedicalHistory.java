@@ -23,11 +23,11 @@ public class MedicalHistory {
     private Long medicalHistoryId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "doctor_Id")
     private Doctor doctor;
 
     @Column(name = "blood_type")
