@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,7 @@ public class DoctorProfileResponseDto {
     private LocalDate dateOfBirth;
     private String specialization;
     private String licenseNumber;
+    private BigDecimal consultationFee;
     private int yearsOfExperience;
     private List<String> qualifications;
     private String medicalSchool;

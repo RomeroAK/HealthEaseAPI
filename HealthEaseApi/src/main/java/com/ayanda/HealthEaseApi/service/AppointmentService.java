@@ -66,15 +66,26 @@ public class AppointmentService {
     public AppointmentDto markAppointmentAsCompleted(Long appointmentId, Long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
+        if(appointment.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED)){
         appointment.setStatus(Appointment.AppointmentStatus.COMPLETED);
        Appointment updatedAppointment = appointmentRepository.save(appointment);
        return mapToDto(updatedAppointment);
+        }
+
+        return mapToDto(appointment);
     }
 
     public AppointmentDto markAppointmentAsCancelled(Long appointmentId, Long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
         appointment.setStatus(Appointment.AppointmentStatus.CANCELLED);
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+        return mapToDto(savedAppointment);
+    }
+
+    public AppointmentDto markAppointmentAsAccepted(Long appointmentId, Long userId){
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found with id: "+appointmentId));
+        appointment.setStatus(Appointment.AppointmentStatus.CONFIRMED);
         Appointment savedAppointment = appointmentRepository.save(appointment);
         return mapToDto(savedAppointment);
     }

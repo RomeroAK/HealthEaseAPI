@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -43,6 +44,20 @@ public class PatientServiceController {
     public ResponseEntity<ApiResponseDto> getDoctorsBySpecialization(@PathVariable Long userId, @PathVariable String specialization) {
         try {
             List<DoctorProfileResponseDto> doctors = doctorServicel.getDoctorsBySpecialization(specialization);
+            return ResponseEntity.ok(new ApiResponseDto(true, "Doctors retrieved successfully", doctors));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(500).body(new ApiResponseDto(false, "An error occurred"));
+        }
+    }
+
+    @GetMapping("service/{userId}/patient/doctors/get-by-consultationfee/{fee}")
+    public ResponseEntity<ApiResponseDto> getDoctorsByConsultationFee(@PathVariable Long userId, @PathVariable String fee){
+
+        try {
+            BigDecimal consultationFee = new BigDecimal(fee);
+            List<DoctorProfileResponseDto> doctors = doctorServicel.getDoctorsByConsultationFee(consultationFee);
             return ResponseEntity.ok(new ApiResponseDto(true, "Doctors retrieved successfully", doctors));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));

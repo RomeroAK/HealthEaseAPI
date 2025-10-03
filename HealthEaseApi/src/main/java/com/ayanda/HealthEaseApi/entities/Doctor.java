@@ -101,9 +101,8 @@ public class Doctor {
     @Embedded
     private ConsultationFees consultationFees;
 
-    @Builder.Default
     @Column(name = "consultation_fee", precision = 10, scale = 2)
-    private BigDecimal consultationFee = BigDecimal.ZERO;;
+    private BigDecimal consultationFee;
 
     @Column(length = 1000)
     private String bio;

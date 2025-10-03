@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -104,6 +105,11 @@ public class DoctorProfileService {
         return mapToDto(doctor);
     }
 
+    public List<DoctorProfileResponseDto> getDoctorsByConsultationFee(BigDecimal consultationFee){
+        List<Doctor> doctors = doctorRepository.findByConsultationFeeLessThanEqual(consultationFee);
+        return doctors.stream().map(this::mapToDto).toList();
+    }
+
     public List<PatientProfileResponseDto> getPatientsLinkedToDoctor(Long doctorUserId){
         User user = userRepository.findById(doctorUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", doctorUserId));
@@ -131,7 +137,7 @@ public class DoctorProfileService {
         doctor.setBio(info.getBio());
         doctor.setMedicalLicenseNumber(info.getLicenseNumber());
         doctor.setIsActive(info.isActive());
-        List<String> insuranceList = List.of(info.getAcceptedInsurance().split("-"));
+        List<String> insuranceList = List.of(info.getAcceptedInsurance().split(","));
         doctor.getAcceptedInsuranceProviders().addAll(insuranceList);
 
         if (info.isPrivatePractice()) {
@@ -183,6 +189,7 @@ public class DoctorProfileService {
         dto.setLastName(doctor.getLastName());
         dto.setFullName(doctor.getFullName());
         dto.setLicenseNumber(doctor.getMedicalLicenseNumber());
+        dto.setConsultationFee(doctor.getConsultationFee());
         dto.setEmail(doctor.getEmail());
         dto.setGender(doctor.getGender().name());
         dto.setBio(doctor.getBio());
