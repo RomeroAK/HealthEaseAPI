@@ -63,7 +63,7 @@ public class DoctorProfileController {
         try {
             DoctorProfileResponseDto doctor = doctorProfileService.getDoctorProfile(userId);
             ApiResponseDto response = new ApiResponseDto(true, "Doctor profile retrieved successfully", doctor);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

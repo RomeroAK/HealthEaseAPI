@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -27,7 +28,7 @@ public class Appointment {
     private Doctor doctor;
 
     @Column(name = "appointment_date", nullable = false)
-    private LocalDate appointmentDate;
+    private LocalDateTime appointmentDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_type", nullable = false)

@@ -170,6 +170,7 @@ public class Doctor {
     private Double longitude;
 
     @ManyToMany
+    @Builder.Default
     private List<Patient> patients = new ArrayList<>();
 
     // Enums

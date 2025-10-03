@@ -56,6 +56,13 @@ public class AppointmentService {
         return appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateDesc(patient.getPatientId()).stream().map(this::mapToDto).toList();
     }
 
+    public List<AppointmentDto> getAppointmentsByDoctorUserIdSortByDate(Long doctorId){
+        User user = userRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("User not found with id: "+doctorId));
+        Doctor doctor = doctorRepository.findByUser_id(user.getId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: "+doctorId));
+        return appointmentRepository.findByDoctor_DoctorIdOrderByAppointmentDateDesc(doctor.getDoctorId()).stream().map(this::mapToDto).toList();
+    }
+
     public AppointmentDto markAppointmentAsCompleted(Long appointmentId, Long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
