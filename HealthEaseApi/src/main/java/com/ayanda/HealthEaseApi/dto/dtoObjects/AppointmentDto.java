@@ -22,11 +22,12 @@ public class AppointmentDto {
     private Long doctorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime appointmentDate;
+    private LocalDate appointmentDate;
 
     private String appointmentType;
 
-    private Appointment.AppointmentStatus status;
+//    private Appointment.AppointmentStatus status;
+    private String status;
 
     private String reason;
 }

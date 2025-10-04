@@ -28,15 +28,13 @@ public class Appointment {
     private Doctor doctor;
 
     @Column(name = "appointment_date", nullable = false)
-    private LocalDateTime appointmentDate;
+    private LocalDate appointmentDate;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "appointment_type", nullable = false)
-    private AppointmentType appointmentType;
+    private String appointmentType;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private AppointmentStatus status;
+    private String status;
 
     @Column(name = "reason", nullable = false, length = 500)
     private String reason;

@@ -120,10 +120,10 @@ public class PatientServiceController {
     }
 
     @PostMapping("/{userId}/appointments/book")
-    public ResponseEntity<ApiResponseDto> bookAppointment(@PathVariable Long userId, @RequestBody AppointmentBookingRequest appointmentRequest) {
+    public ResponseEntity<ApiResponseDto> bookAppointment(@PathVariable Long userId, @RequestBody AppointmentDto appointmentRequest) {
         try {
             // Assuming appointmentRequest is of the correct type
-            Object bookedAppointment = appointmentService.bookAppointment(userId, appointmentRequest.getAppointmentInfo());
+            Object bookedAppointment = appointmentService.bookAppointment(userId, appointmentRequest);
             return ResponseEntity.ok(new ApiResponseDto(true, "Appointment booked successfully", bookedAppointment));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));

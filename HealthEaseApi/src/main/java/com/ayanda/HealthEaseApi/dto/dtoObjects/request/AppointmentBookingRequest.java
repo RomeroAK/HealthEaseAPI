@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AppointmentBookingRequest {
+public class AppointmentBookingRequest  {
 
     private AppointmentDto appointmentInfo;
 }

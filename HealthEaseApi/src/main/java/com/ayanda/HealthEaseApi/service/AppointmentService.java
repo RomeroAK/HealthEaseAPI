@@ -3,6 +3,7 @@ package com.ayanda.HealthEaseApi.service;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.DoctorSummaryDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.PatientSummaryDto;
+import com.ayanda.HealthEaseApi.dto.dtoObjects.doctorDtos.helper.exceptions.ResourceNotFoundException;
 import com.ayanda.HealthEaseApi.entities.Appointment;
 import com.ayanda.HealthEaseApi.entities.Doctor;
 import com.ayanda.HealthEaseApi.entities.Patient;
@@ -35,9 +36,8 @@ public class AppointmentService {
     public AppointmentDto bookAppointment(Long patientId, AppointmentDto appointmentDto) {
         User user = userRepository.findById(patientId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + patientId));
-        Patient patient = patientRepository.findByUser_id(user.getId())
-                .orElseThrow(() -> new RuntimeException("Patient not found for user id: "+user.getId()));
-
+        Patient patient = patientRepository.findByUser_id(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", "userId", patientId));
 
         Doctor doctor = doctorRepository.findByUser_Id(appointmentDto.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + appointmentDto.getDoctorId()));
@@ -87,8 +87,8 @@ public class AppointmentService {
     public AppointmentDto markAppointmentAsCompleted(Long appointmentId, Long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
-        if(appointment.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED)){
-        appointment.setStatus(Appointment.AppointmentStatus.COMPLETED);
+        if(appointment.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED.toString().toLowerCase())){
+        appointment.setStatus(Appointment.AppointmentStatus.COMPLETED.toString().toLowerCase());
        Appointment updatedAppointment = appointmentRepository.save(appointment);
        return mapToDto(updatedAppointment);
         }
@@ -99,14 +99,14 @@ public class AppointmentService {
     public AppointmentDto markAppointmentAsCancelled(Long appointmentId, Long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
-        appointment.setStatus(Appointment.AppointmentStatus.CANCELLED);
+        appointment.setStatus(Appointment.AppointmentStatus.CANCELLED.toString().toLowerCase());
         Appointment savedAppointment = appointmentRepository.save(appointment);
         return mapToDto(savedAppointment);
     }
 
     public AppointmentDto markAppointmentAsAccepted(Long appointmentId, Long userId){
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found with id: "+appointmentId));
-        appointment.setStatus(Appointment.AppointmentStatus.CONFIRMED);
+        appointment.setStatus(Appointment.AppointmentStatus.CONFIRMED.toString().toLowerCase());
         Appointment savedAppointment = appointmentRepository.save(appointment);
         return mapToDto(savedAppointment);
     }
@@ -132,7 +132,7 @@ public AppointmentDto mapToDto(Appointment appointment) {
     return AppointmentDto.builder()
             .id(appointment.getAppointmentId())
             .appointmentDate(appointment.getAppointmentDate())
-            .appointmentType(appointment.getAppointmentType().name())
+            .appointmentType(appointment.getAppointmentType())
             .status(appointment.getStatus())
             .reason(appointment.getReason())
             .build();
@@ -142,7 +142,7 @@ public Appointment mapToEntity(AppointmentDto dto) {
     return Appointment.builder()
             .appointmentId(dto.getId())
             .appointmentDate(dto.getAppointmentDate())
-            .appointmentType(Appointment.AppointmentType.getAppointmentType(dto.getAppointmentType()))
+            .appointmentType(dto.getAppointmentType())
             .status(dto.getStatus())
             .reason(dto.getReason())
             .build();
