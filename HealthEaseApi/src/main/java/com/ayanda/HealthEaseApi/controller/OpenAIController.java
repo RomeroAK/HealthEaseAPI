@@ -19,7 +19,7 @@ public class OpenAIController {
         this.openAIService = openAIService;
     }
 
-    @GetMapping("service/{userId}/ask")
+    @GetMapping("{userId}/chatbot/message")
     public ResponseEntity<ApiResponseDto> ask(@PathVariable Long userId,@RequestParam String prompt) {
         try {
             Mono<String> response = openAIService.getResponse(prompt);
