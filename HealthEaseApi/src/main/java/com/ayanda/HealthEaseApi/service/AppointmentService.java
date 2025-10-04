@@ -38,15 +38,18 @@ public class AppointmentService {
         Patient patient = patientRepository.findByUser_id(user.getId())
                 .orElseThrow(() -> new RuntimeException("Patient not found for user id: "+user.getId()));
 
-        DoctorSummaryDto dto = appointmentDto.getDoctor();
-        Doctor doctor = doctorRepository.findByUser_Id(dto.getId())
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + dto.getId()));
+
+        Doctor doctor = doctorRepository.findByUser_Id(appointmentDto.getDoctorId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + appointmentDto.getDoctorId()));
         Appointment appointment = mapToEntity(appointmentDto);
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
        Appointment savedAppointment = appointmentRepository.save(appointment);
+       AppointmentDto savedDto = mapToDto(savedAppointment);
+       savedDto.setPatientId(patient.getPatientId());
+       savedDto.setDoctorId(doctor.getDoctorId());
        linkPatientToDoctor(patient, doctor);
-       return mapToDto(savedAppointment);
+       return savedDto;
     }
 
     public List<AppointmentDto> getAppointmentsByUserIdSortByDate(Long patientId) {
@@ -132,8 +135,6 @@ public AppointmentDto mapToDto(Appointment appointment) {
             .appointmentType(appointment.getAppointmentType().name())
             .status(appointment.getStatus())
             .reason(appointment.getReason())
-            .patient(PatientSummaryDto.fromEntity(appointment.getPatient()))
-            .doctor(DoctorSummaryDto.fromEntity(appointment.getDoctor()))
             .build();
 }
 

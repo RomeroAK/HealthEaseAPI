@@ -18,8 +18,8 @@ public class AppointmentDto {
 
     private Long id;
 
-    private PatientSummaryDto patient;
-    private DoctorSummaryDto doctor;
+    private Long patientId;
+    private Long doctorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime appointmentDate;

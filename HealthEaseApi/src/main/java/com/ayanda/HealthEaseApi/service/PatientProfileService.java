@@ -523,8 +523,8 @@ public class PatientProfileService {
             if (!surgeryStr.isEmpty()) {
                 SurgeryDto surgery = new SurgeryDto();
 
-                if (surgeryStr.contains(":")) {
-                    String[] parts = surgeryStr.split(":", -1); // -1 to keep empty strings
+                if (surgeryStr.contains("|")) {
+                    String[] parts = surgeryStr.split("\\|", -1); // -1 to keep empty strings
 
                     // Set name (required)
                     surgery.setName(parts.length > 0 ? parts[0].trim() : "");
