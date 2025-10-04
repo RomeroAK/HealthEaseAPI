@@ -119,7 +119,7 @@ public class PatientServiceController {
         }
     }
 
-    @PostMapping("service/{userId}/patient/appointments/book")
+    @PostMapping("/{userId}/appointments/book")
     public ResponseEntity<ApiResponseDto> bookAppointment(@PathVariable Long userId, @RequestBody AppointmentBookingRequest appointmentRequest) {
         try {
             // Assuming appointmentRequest is of the correct type
