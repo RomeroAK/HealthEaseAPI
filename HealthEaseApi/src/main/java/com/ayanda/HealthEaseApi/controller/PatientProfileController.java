@@ -109,41 +109,7 @@ public class PatientProfileController {
 
     // =============================================
     // COMPLETE PROFILE UPDATE ENDPOINTS
-    // =============================================
-
-    /**
-     * Update complete patient profile (with optional file upload)
-     * PUT /api/patients/{userId}/profile
-     */
-//    @PutMapping(value = "/{userId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @PreAuthorize("hasRole('PATIENT') or hasRole('ADMIN')")
-//    public ResponseEntity<ApiResponseDto> updateCompleteProfile(
-//            @PathVariable @NotNull Long userId,
-//            @CurrentUser UserPrincipal currentUser,
-//            @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture,
-//            @RequestParam("profileData") String profileDataJson) {
-//        try {
-//            validateUserAccess(userId, currentUser);
-//
-//            CompleteProfileUpdateDto profileData = patientProfileService.parseProfileData(profileDataJson);
-//            PatientProfileResponseDto updatedProfile = patientProfileService.updateCompleteProfile(
-//                    userId, profileData, profilePicture);
-//
-//            return ResponseEntity.ok(
-//                    new ApiResponseDto(true, "Profile updated successfully", updatedProfile)
-//            );
-//        } catch (UnauthorizedException e) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//                    .body(new ApiResponseDto(false, "Access denied"));
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                    .body(new ApiResponseDto(false, "Invalid profile data: " + e.getMessage()));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(new ApiResponseDto(false, "Failed to update profile: " + e.getMessage()));
-//        }
-//    }
-
+    // ========================================
     /**
      * Update complete profile (JSON only, no file upload)
      * PUT /api/patients/{userId}/profile/data
