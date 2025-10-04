@@ -4,14 +4,8 @@ import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.DoctorSummaryDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.PatientSummaryDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.doctorDtos.helper.exceptions.ResourceNotFoundException;
-import com.ayanda.HealthEaseApi.entities.Appointment;
-import com.ayanda.HealthEaseApi.entities.Doctor;
-import com.ayanda.HealthEaseApi.entities.Patient;
-import com.ayanda.HealthEaseApi.entities.User;
-import com.ayanda.HealthEaseApi.repos.AppointmentRepository;
-import com.ayanda.HealthEaseApi.repos.DoctorRepository;
-import com.ayanda.HealthEaseApi.repos.PatientRepository;
-import com.ayanda.HealthEaseApi.repos.UserRepository;
+import com.ayanda.HealthEaseApi.entities.*;
+import com.ayanda.HealthEaseApi.repos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +20,7 @@ public class AppointmentService {
     private final UserRepository userRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
+    private final MedicalHistoryRepository medicalHistoryRepository;
 
     public List<AppointmentDto> getAllAppointments() {
         return appointmentRepository.findAll().stream()
@@ -39,8 +34,10 @@ public class AppointmentService {
         Patient patient = patientRepository.findByUser_id(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient", "userId", patientId));
 
+        MedicalHistory medicalHistory = medicalHistoryRepository.findByPatient_PatientId(patient.getPatientId()).get(0);
+        patient.setMedicalHistory(medicalHistory);
         Doctor doctor = doctorRepository.findByUser_Id(appointmentDto.getDoctorId())
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + appointmentDto.getDoctorId()));
+                .orElseThrow(() ->new ResourceNotFoundException("Doctor not found", "userId", patientId));
         Appointment appointment = mapToEntity(appointmentDto);
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
