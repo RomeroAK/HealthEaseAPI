@@ -25,15 +25,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // enables your CORS config
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authz -> authz.requestMatchers("api/auth/register","api/auth/login").permitAll().requestMatchers("api/chatbot/openai/service/**").permitAll()
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("api/auth/register", "api/auth/login").permitAll()
+                        .requestMatchers("api/chatbot/openai/service/**").permitAll()
+                        .requestMatchers("api/doctors/**", "api/patienst/**").permitAll()
                         .anyRequest().authenticated()
-                ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        // Add your JWT filter here if you have one
+
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

@@ -2,6 +2,7 @@ package com.ayanda.HealthEaseApi.controller;
 
 import com.ayanda.HealthEaseApi.dto.dtoObjects.ApiResponseDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentDto;
+import com.ayanda.HealthEaseApi.dto.dtoObjects.DoctorSearchRequest;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.MedicalHistoryDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.doctorDtos.DoctorProfileResponseDto;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.doctorDtos.helper.exceptions.ResourceNotFoundException;
@@ -32,6 +33,19 @@ public class PatientServiceController {
     public ResponseEntity<ApiResponseDto> getAllDoctors(@PathVariable Long userId) {
         try {
             List<DoctorProfileResponseDto> doctors = doctorServicel.getAllDoctors();
+            return ResponseEntity.ok(new ApiResponseDto(true, "Doctors retrieved successfully", doctors));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(500).body(new ApiResponseDto(false, "An error occurred"));
+        }
+    }
+
+    @PostMapping("service/{userId}/patient/doctors/search")
+    public ResponseEntity<ApiResponseDto> searchDoctors(@PathVariable Long userId, @RequestBody DoctorSearchRequest searchRequest) {
+        try {
+            // Stub: Replace with actual service call
+            List<DoctorProfileResponseDto> doctors = doctorServicel.searchDoctors(searchRequest);
             return ResponseEntity.ok(new ApiResponseDto(true, "Doctors retrieved successfully", doctors));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));

@@ -58,7 +58,7 @@ public class DoctorProfileController {
         }
     }
 
-    @GetMapping("{userId}/doctors/profiles/get-by-id")
+    @GetMapping("{userId}/doctor/profiles/get-by-id")
     public ResponseEntity<ApiResponseDto> getProfileByUserId(@PathVariable Long userId) {
         try {
             DoctorProfileResponseDto doctor = doctorProfileService.getDoctorProfile(userId);
@@ -150,4 +150,6 @@ public class DoctorProfileController {
                     .body(new ApiResponseDto(false, "Failed to retrieve patients: " + e.getMessage()));
         }
     }
+
+
 }

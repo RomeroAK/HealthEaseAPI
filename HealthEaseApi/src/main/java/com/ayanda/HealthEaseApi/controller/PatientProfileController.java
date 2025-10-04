@@ -27,25 +27,16 @@ public class PatientProfileController {
 
     @Autowired
     private PatientProfileService patientProfileService;
-    final  String MEDIATYPE = "MediaType.APPLICATION_JSON";
-
-
-    // =============================================
-    // PROFILE RETRIEVAL ENDPOINTS
-    // =============================================
 
     /**
      * Get complete patient profile
      * GET /api/patients/{userId}/profile
      */
-    @GetMapping("/{userId}/profile")
+    @GetMapping("/{userId}/patient/profile")
     @PreAuthorize("hasRole('PATIENT') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponseDto> getProfile(
-            @PathVariable @NotNull Long userId,
-            @CurrentUser UserPrincipal currentUser) {
+            @PathVariable Long userId) {
         try {
-            // Security check - users can only access their own profile unless admin
-            validateUserAccess(userId, currentUser);
 
             PatientProfileResponseDto profile = patientProfileService.getPatientProfile(userId);
 
@@ -161,10 +152,8 @@ public class PatientProfileController {
     @PreAuthorize("hasRole('patient') or hasRole('admin')")
     public ResponseEntity<ApiResponseDto> updateProfileData(
             @PathVariable(name = "userId") @NotNull Long userId,
-            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CompleteProfileUpdateDto profileData) {
         try {
-            validateUserAccess(userId, currentUser);
 
             PatientProfileResponseDto updatedProfile = patientProfileService.updateCompleteProfile(
                     userId, profileData, null);

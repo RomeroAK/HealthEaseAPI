@@ -66,6 +66,17 @@ public class DoctorProfileService {
 
     }
 
+    public List<DoctorProfileResponseDto> searchDoctors(DoctorSearchRequest request) {
+        // Basic implementation: filter by name, specialty, and practiceName if provided
+        List<Doctor> doctors = doctorRepository.findAll();
+        return doctors.stream()
+                .filter(d -> (request.getName() == null || d.getFullName() != null && d.getFullName().toLowerCase().contains(request.getName().toLowerCase())))
+                .filter(d -> (request.getSpecialty() == null || d.getSpecialization() != null && d.getSpecialization().toLowerCase().contains(request.getSpecialty().toLowerCase())))
+                .filter(d -> (request.getPracticeName() == null || d.getPracticeName() != null && d.getPracticeName().toLowerCase().contains(request.getPracticeName().toLowerCase())))
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
 
     public DoctorProfileResponseDto getDoctorProfile(Long userId){
         User user = userRepository.findById(userId)
