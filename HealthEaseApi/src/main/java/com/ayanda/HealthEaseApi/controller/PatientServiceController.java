@@ -110,7 +110,7 @@ public class PatientServiceController {
     @GetMapping("{userId}/patient/appointments/upcoming")
     public ResponseEntity<ApiResponseDto> getUpcomingAppointments(@PathVariable Long userId){
         try {
-            List<AppointmentDto> appointments = appointmentService.getUpcomingAppointments(userId);
+            List<AppointmentDto> appointments = appointmentService.getUpcomingPatientAppointments(userId);
             return ResponseEntity.ok(new ApiResponseDto(true, "Appointments retrieved successfully", appointments));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
