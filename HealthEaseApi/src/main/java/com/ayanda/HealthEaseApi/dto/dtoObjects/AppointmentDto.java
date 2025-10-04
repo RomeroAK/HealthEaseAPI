@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,6 +29,10 @@ public class AppointmentDto {
 
 //    private Appointment.AppointmentStatus status;
     private String status;
+
+    private String doctorName;
+
+    private BigDecimal consultationFee;
 
     private String reason;
 }

@@ -149,6 +149,8 @@ public AppointmentDto mapToDto(Appointment appointment) {
             .appointmentType(appointment.getAppointmentType())
             .status(appointment.getStatus())
             .reason(appointment.getReason())
+            .consultationFee(appointment.getDoctor().getConsultationFee())
+            .doctorName(appointment.getDoctor().getFirstName()+" "+appointment.getDoctor().getLastName())
             .build();
 }
 
