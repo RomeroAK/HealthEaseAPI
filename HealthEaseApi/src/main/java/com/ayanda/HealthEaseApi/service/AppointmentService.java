@@ -66,7 +66,7 @@ public class AppointmentService {
         List<Appointment> allAppointments = appointmentRepository.findByDoctor_DoctorId(doctor.getDoctorId());
         List<AppointmentDto> upcomingAppointments = new ArrayList<>();
         for(Appointment ap: allAppointments){
-            if(ap.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED)){
+            if(ap.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED.name().toLowerCase())){
                 upcomingAppointments.add(mapToDto(ap));
             }
         }
@@ -85,7 +85,7 @@ public class AppointmentService {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
         if(appointment.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED.toString().toLowerCase())){
-        appointment.setStatus(Appointment.AppointmentStatus.COMPLETED.toString().toLowerCase());
+        appointment.setStatus(Appointment.AppointmentStatus.COMPLETED.name().toLowerCase());
        Appointment updatedAppointment = appointmentRepository.save(appointment);
        return mapToDto(updatedAppointment);
         }
