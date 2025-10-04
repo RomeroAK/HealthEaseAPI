@@ -14,6 +14,7 @@ import com.ayanda.HealthEaseApi.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,6 +57,23 @@ public class AppointmentService {
         return appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateDesc(patient.getPatientId()).stream().map(this::mapToDto).toList();
     }
 
+    public List<AppointmentDto> getUpcomingAppointments(Long doctorId){
+        User user = userRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + doctorId));
+
+        Doctor doctor = doctorRepository.findByUser_id(user.getId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found by user_id: "+user.getId()));
+        List<Appointment> allAppointments = appointmentRepository.findByDoctor_DoctorId(doctor.getDoctorId());
+        List<AppointmentDto> upcomingAppointments = new ArrayList<>();
+        for(Appointment ap: allAppointments){
+            if(ap.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED)){
+                upcomingAppointments.add(mapToDto(ap));
+            }
+        }
+
+        return upcomingAppointments;
+
+    }
     public List<AppointmentDto> getAppointmentsByDoctorUserIdSortByDate(Long doctorId){
         User user = userRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("User not found with id: "+doctorId));
         Doctor doctor = doctorRepository.findByUser_id(user.getId())

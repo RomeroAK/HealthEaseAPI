@@ -57,4 +57,5 @@ public class DoctorServiceController {
             return ResponseEntity.status(500).body(new ApiResponseDto(false, "An error occurred"));
         }
     }
+
 }

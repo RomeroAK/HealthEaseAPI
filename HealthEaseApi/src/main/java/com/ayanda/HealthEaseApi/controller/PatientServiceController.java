@@ -12,6 +12,7 @@ import com.ayanda.HealthEaseApi.service.AppointmentService;
 import com.ayanda.HealthEaseApi.service.DoctorProfileService;
 import com.ayanda.HealthEaseApi.service.MedicalHistoryService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -98,6 +99,18 @@ public class PatientServiceController {
     public ResponseEntity<ApiResponseDto> getAllAppointments(@PathVariable Long userId) {
         try {
             List<AppointmentDto> appointments = appointmentService.getAppointmentsByUserIdSortByDate(userId);
+            return ResponseEntity.ok(new ApiResponseDto(true, "Appointments retrieved successfully", appointments));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(500).body(new ApiResponseDto(false, "An error occurred"));
+        }
+    }
+
+    @GetMapping("{userId}/patient/appointments/upcoming")
+    public ResponseEntity<ApiResponseDto> getUpcomingAppointments(@PathVariable Long userId){
+        try {
+            List<AppointmentDto> appointments = appointmentService.getUpcomingAppointments(userId);
             return ResponseEntity.ok(new ApiResponseDto(true, "Appointments retrieved successfully", appointments));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
