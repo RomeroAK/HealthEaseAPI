@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +93,23 @@ public class PatientProfileService {
         userRepository.profileCompleteToTrue(user.getId());
 
         return mapPatientToResponseDto(savedPatient, user);
+    }
+
+    public List<PatientProfileResponseDto> getAllPatientsLinkedToDoctor(Long userId){
+
+        List<Patient> patients = patientRepository.findAll();
+        List<PatientProfileResponseDto> patientProfileResponseDtoList = new ArrayList<>();
+        for(Patient p: patients){
+            if(p.getDoctors()!=null){
+                for(Doctor d: p.getDoctors()){
+                    if(Objects.equals(d.getUser().getId(), userId)){
+                        patientProfileResponseDtoList.add(mapPatientToResponseDto(p, p.getUser()));
+                    }
+                }
+            }
+        }
+
+        return patientProfileResponseDtoList;
     }
 
     public List<PatientProfileResponseDto> getPatientByNameAndSurname(String name, String surname){
@@ -301,7 +320,7 @@ public class PatientProfileService {
 
             if (Boolean.TRUE.equals(vaccinations.getCovid19())) vaccinationList.add("COVID-19");
             if (Boolean.TRUE.equals(vaccinations.getFlu())) vaccinationList.add("Flu");
-            if (Boolean.TRUE.equals(vaccinations.getHepatitisBs())) vaccinationList.add("Hepatitis B");
+            if (Boolean.TRUE.equals(vaccinations.getHepatitisB())) vaccinationList.add("Hepatitis B");
             if (Boolean.TRUE.equals(vaccinations.getTetanus())) vaccinationList.add("Tetanus");
             if (vaccinations.getOther() != null && !vaccinations.getOther().trim().isEmpty()) {
                 vaccinationList.add(vaccinations.getOther());

@@ -46,7 +46,7 @@ public class DoctorInfoUpdateDto {
 
     private BigDecimal consultationFee;
 
-    private String acceptedInsurance;
+    private List<String> acceptedInsurance;
     private boolean isPrivatePractice;
 
     private String practiceName;

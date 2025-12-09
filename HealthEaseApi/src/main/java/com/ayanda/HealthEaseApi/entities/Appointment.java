@@ -3,7 +3,6 @@ package com.ayanda.HealthEaseApi.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,7 +27,7 @@ public class Appointment {
     private Doctor doctor;
 
     @Column(name = "appointment_date", nullable = false)
-    private LocalDate appointmentDate;
+    private LocalDateTime appointmentDateTime; // Changed from LocalDate to LocalDateTime
 
     @Column(name = "appointment_type", nullable = false)
     private String appointmentType;

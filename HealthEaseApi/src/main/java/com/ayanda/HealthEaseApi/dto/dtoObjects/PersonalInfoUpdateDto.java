@@ -41,6 +41,8 @@ public class PersonalInfoUpdateDto {
     @Pattern(regexp = "^[0-9]{13}$", message = "ID number must be 13 digits")
     private String idNumber;
 
+    private String profilePicture;
+
     private String occupation;
     private String employer;
     private String maritalStatus;

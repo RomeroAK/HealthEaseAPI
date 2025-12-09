@@ -54,7 +54,7 @@ public class AppointmentService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + patientId));
         Patient patient = patientRepository.findByUser_id(user.getId())
                 .orElseThrow(() -> new RuntimeException("Patient not found for user id: "+user.getId()));
-        return appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateDesc(patient.getPatientId()).stream().map(this::mapToDto).toList();
+        return appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateTimeDesc(patient.getPatientId()).stream().map(this::mapToDto).toList();
     }
 
     public List<AppointmentDto> getUpcomingAppointments(Long doctorId){
@@ -80,7 +80,7 @@ public class AppointmentService {
 
         Patient doctor = patientRepository.findByUser_id(user.getId())
                 .orElseThrow(() -> new RuntimeException("Doctor not found by user_id: "+user.getId()));
-        List<Appointment> allAppointments = appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateDesc(patientId);
+        List<Appointment> allAppointments = appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateTimeDesc(patientId);
         List<AppointmentDto> upcomingAppointments = new ArrayList<>();
         for(Appointment ap: allAppointments){
             if(ap.getStatus().equals(Appointment.AppointmentStatus.CONFIRMED.name().toLowerCase())){
@@ -95,7 +95,7 @@ public class AppointmentService {
         User user = userRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("User not found with id: "+doctorId));
         Doctor doctor = doctorRepository.findByUser_id(user.getId())
                 .orElseThrow(() -> new RuntimeException("Doctor not found with id: "+doctorId));
-        return appointmentRepository.findByDoctor_DoctorIdOrderByAppointmentDateDesc(doctor.getDoctorId()).stream().map(this::mapToDto).toList();
+        return appointmentRepository.findByDoctor_DoctorIdOrderByAppointmentDateTimeDesc(doctor.getDoctorId()).stream().map(this::mapToDto).toList();
     }
 
     public AppointmentDto markAppointmentAsCompleted(Long appointmentId, Long userId) {
@@ -141,23 +141,22 @@ public class AppointmentService {
     }
 
 // In AppointmentService.java
-
 public AppointmentDto mapToDto(Appointment appointment) {
     return AppointmentDto.builder()
             .id(appointment.getAppointmentId())
-            .appointmentDate(appointment.getAppointmentDate())
+            .appointmentDateTime(appointment.getAppointmentDateTime())
             .appointmentType(appointment.getAppointmentType())
             .status(appointment.getStatus())
             .reason(appointment.getReason())
             .consultationFee(appointment.getDoctor().getConsultationFee())
-            .doctorName(appointment.getDoctor().getFirstName()+" "+appointment.getDoctor().getLastName())
+            .doctorName(appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName())
             .build();
 }
 
 public Appointment mapToEntity(AppointmentDto dto) {
     return Appointment.builder()
             .appointmentId(dto.getId())
-            .appointmentDate(dto.getAppointmentDate())
+            .appointmentDateTime(dto.getAppointmentDateTime())
             .appointmentType(dto.getAppointmentType())
             .status(dto.getStatus())
             .reason(dto.getReason())

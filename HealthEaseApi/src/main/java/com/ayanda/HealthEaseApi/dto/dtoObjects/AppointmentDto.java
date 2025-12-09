@@ -18,21 +18,14 @@ import java.time.LocalDateTime;
 public class AppointmentDto {
 
     private Long id;
-
     private Long patientId;
     private Long doctorId;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate appointmentDate;
-
+    private LocalDateTime appointmentDateTime;
     private String appointmentType;
-
 //    private Appointment.AppointmentStatus status;
     private String status;
-
     private String doctorName;
-
     private BigDecimal consultationFee;
-
     private String reason;
 }

@@ -148,8 +148,7 @@ public class DoctorProfileService {
         doctor.setBio(info.getBio());
         doctor.setMedicalLicenseNumber(info.getLicenseNumber());
         doctor.setIsActive(info.isActive());
-        List<String> insuranceList = List.of(info.getAcceptedInsurance().split(","));
-        doctor.getAcceptedInsuranceProviders().addAll(insuranceList);
+        doctor.setAcceptedInsuranceProviders(info.getAcceptedInsurance());
 
         if (info.isPrivatePractice()) {
             if(info.getClinicAddress()!=null){

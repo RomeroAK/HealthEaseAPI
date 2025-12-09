@@ -4,22 +4,19 @@ server.port=8080
 ##Database Configuration
 spring.datasource.url=jdbc:postgresql://localhost:5432/healthdb1
 spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.username=postgres
-spring.datasource.password=admin
+spring.datasource.username=your-database-username
+spring.datasource.password=your-database-password
 
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 spring.flyway.enabled=false
 
 ## JWT Configuration
-application.security.jwt.secret-key=
+application.security.jwt.secret-key=your-jwt-secret-key-here
 application.security.jwt.expiration=3600000
 application.security.jwt.refresh-token.expiration=8640000
 
-# application.propertie
-openai.api.key=
+# OpenAI Configuration
+openai.api.key=your-openai-api-key-here
 openai.api.url=https://api.openai.com/v1
-
-
-
 

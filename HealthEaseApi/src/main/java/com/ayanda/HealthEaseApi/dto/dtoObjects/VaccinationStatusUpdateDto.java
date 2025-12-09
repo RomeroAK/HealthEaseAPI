@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class VaccinationStatusUpdateDto {
     private Boolean covid19;
     private Boolean flu;
-    private Boolean hepatitisBs;
+    private Boolean hepatitisB;
     private Boolean tetanus;
     private String other;
 }

@@ -1,9 +1,6 @@
 package com.ayanda.HealthEaseApi.controller;
 
-import com.ayanda.HealthEaseApi.dto.dtoObjects.ApiResponseDto;
-import com.ayanda.HealthEaseApi.dto.dtoObjects.AppointmentDto;
-import com.ayanda.HealthEaseApi.dto.dtoObjects.MedicalHistoryDto;
-import com.ayanda.HealthEaseApi.dto.dtoObjects.MedicalRecordInfo;
+import com.ayanda.HealthEaseApi.dto.dtoObjects.*;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.doctorDtos.helper.exceptions.ResourceNotFoundException;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.doctorDtos.helper.exceptions.UnauthorizedException;
 import com.ayanda.HealthEaseApi.service.DoctorService;
@@ -51,6 +48,18 @@ public class DoctorServiceController {
         try{
             List<AppointmentDto> appointmentDtoList = doctorService.getAppointmentsByDoctorID(userId);
             return ResponseEntity.status(200).body(new ApiResponseDto(true,"Success got appointments",appointmentDtoList));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(500).body(new ApiResponseDto(false, "An error occurred"));
+        }
+    }
+
+    @GetMapping("{userId}/doctor/patients/get-all")
+    public ResponseEntity<ApiResponseDto> getAllPatientsLinkedToDoctor(@PathVariable Long userId){
+        try{
+            List<PatientProfileResponseDto> patientsLinkedTpDoctor = doctorService.getAllPatientsLinkedTpDoctor(userId);
+            return ResponseEntity.status(200).body(new ApiResponseDto(true,"Success got all patients",patientsLinkedTpDoctor));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(new ApiResponseDto(false, e.getMessage()));
         } catch (UnauthorizedException e) {

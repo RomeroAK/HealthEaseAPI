@@ -2,43 +2,37 @@ package com.ayanda.HealthEaseApi.service;
 
 import com.ayanda.HealthEaseApi.dto.dtoObjects.chatbot.OpenAIRequest;
 import com.ayanda.HealthEaseApi.dto.dtoObjects.chatbot.OpenAIResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Service
 public class OpenAIService {
 
-    @Value("${openai.api.key}")
-    private String apiKey;
+    @Autowired
+    private final RestTemplate restTemplate;
 
-    private final WebClient webClient;
-
-    public OpenAIService(WebClient openAIWebClient) {
-        this.webClient = openAIWebClient;
+    public OpenAIService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    public Mono<String> getResponse(String prompt) {
-        OpenAIRequest request = new OpenAIRequest();
-        request.setModel("gpt-4");
-        request.setMax_tokens(100);
-        request.setMessages(List.of(new OpenAIRequest.Message("user", prompt)));
+    public OpenAIResponse getResponse(OpenAIRequest requestBody) {
+        String apiKey = "";
+        //subsitutue with actual key management solution later
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return webClient.post()
-                .uri("/chat/completions")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(OpenAIResponse.class)
-                .map(response -> response.getChoices().get(0).getMessage().getContent());
+        HttpEntity<OpenAIRequest> entity = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<OpenAIResponse> response = restTemplate.postForEntity(
+                "https://api.openai.com/v1/chat/completions",
+                entity,
+                OpenAIResponse.class
+        );
+
+        return response.getBody();
     }
-
 }
